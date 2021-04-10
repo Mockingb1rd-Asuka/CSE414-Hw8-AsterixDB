@@ -1,0 +1,12 @@
+SELECT DISTINCT reli_country.religion as religion, ARRAY_COUNT(relis) as num_countries
+FROM  hw8.world x, x.mondial.country z,
+(SELECT DISTINCT religions.`#text` as religion, y.name as country
+FROM  hw8.world x, x.mondial.country y,
+CASE WHEN y.religions IS MISSING
+THEN []
+ WHEN is_array(y.religions)
+THEN y.religions
+ELSE [y.religions] END religions) as reli_country
+GROUP BY reli_country.religion
+GROUP AS relis(reli_country as religion)
+ORDER BY num_countries DESC;

@@ -1,0 +1,11 @@
+SELECT DISTINCT y.name, y.population, ARRAY_COUNT(religions) as num_religions
+                       FROM hw8.world x, x.mondial.country y
+                       LET religions = (SELECT VALUE re
+FROM x.mondial.country y2,
+CASE WHEN y2.religions IS MISSING
+                       THEN []
+                       WHEN is_array(y2.religions)
+                       THEN y2.religions
+                       ELSE [y2.religions] END re
+WHERE y.name = y2.name)
+ORDER BY y.name;        

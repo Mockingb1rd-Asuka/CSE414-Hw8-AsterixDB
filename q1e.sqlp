@@ -1,0 +1,7 @@
+SELECT DISTINCT y.`-car_code` as country_code, y.name as country_name, sea
+FROM hw8.world x, x.mondial.country y
+LET sea = (SELECT VALUE s.name
+                                           FROM hw8.world x2, x2.mondial.sea s, split(s.`-country`, ' ') r
+                                           WHERE y.`-car_code` = r)
+WHERE ARRAY_COUNT(sea) >= 2
+ORDER BY ARRAY_COUNT(sea) DESC;

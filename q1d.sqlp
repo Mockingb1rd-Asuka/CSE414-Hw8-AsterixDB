@@ -1,0 +1,11 @@
+SELECT DISTINCT ethic_tree[0].ethnicsdivided.name as ethnic_group, ARRAY_COUNT(ethic_tree) as num_countries, SUM(population) as total_population
+FROM  hw8.world x, 
+(SELECT DISTINCT ethnics.`#text` as name, y.name as country, (float(y.population) * float(ethnics.`-percentage`) * 0.01) as population
+FROM  hw8.world x, x.mondial.country y,
+CASE WHEN y.ethnicgroups IS MISSING
+THEN []
+ WHEN is_array(y.ethnicgroups)
+THEN y.ethnicgroups
+ELSE [y.ethnicgroups] END ethnics) as ethnicstats
+GROUP BY ethnicstats.name
+GROUP AS ethic_tree(ethnicstats as ethnicsdivided);
